@@ -26,16 +26,17 @@ int main() {
     std::ifstream in2("steps.txt"); std::getline(in2, line);
     in2.close();
 
-    std::string result = "AAA"; int steps{};
+    std::string_view result = "AAA"; int steps{};
 
     while (result != "ZZZ")
     {
         char next = line[steps % line.length()];
 
-        if (next == 'R') result = map[result].second;
-        else if (next == 'L') result = map[result].first;
+        const auto& [left, right] = map[std::string(result)];
+        result = (next == 'R') ? right : left;
 
         ++steps;
     }
+
     printf("%d", steps);
 }
