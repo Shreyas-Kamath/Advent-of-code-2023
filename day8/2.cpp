@@ -37,14 +37,15 @@ int main() {
     std::unordered_map<std::string, long long> steps_needed;
 
     for (const auto& start: starting_points) {
-        std::string result = start;
+        std::string_view result = start;
         long long steps{};
 
-        while (!result.ends_with('Z')) {
+        while (!result.ends_with('Z'))
+        {
             char next = line[steps % line.length()];
 
-            if (next == 'R') result = map[result].second;
-            else if (next == 'L') result = map[result].first;
+            const auto& [left, right] = map[std::string(result)];
+            result = (next == 'R') ? right : left;
 
             ++steps;
         }
